@@ -9,13 +9,12 @@ public class Weapon : MonoBehaviour
     [SerializeField] int damage = 30;
     [SerializeField] float fireRate = 0.3f;
     [SerializeField] LayerMask damageLayerMask;
-    [SerializeField] Transform flashFXPos;
+    [SerializeField] ParticleSystem flashFX;
 
     [Header("Impact Force")]
     [SerializeField] float impactForce = 3f;
 
     [Header("FX Settings")]
-    [SerializeField] GameObject flashEffect;
     [SerializeField] GameObject impactEffect;
 
     private float fire;
@@ -23,7 +22,6 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        flashEffect.transform.localScale = new Vector3 (0.1f, 0.1f, 0.1f);
         fire = fireRate;
     }
 
@@ -36,7 +34,7 @@ public class Weapon : MonoBehaviour
         {
             fire = fireRate;
 
-            Instantiate(flashEffect, flashFXPos.position, Quaternion.identity);
+            flashFX.Play();
             //TODO Play Sound
 
             RaycastHit hit;
