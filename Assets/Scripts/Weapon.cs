@@ -2,67 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
-    [SerializeField] Transform mainCamera;
-    [SerializeField] float range = 100f;
-    [SerializeField] int damage = 30;
-    [SerializeField] float fireRate = 0.3f;
-    [SerializeField] LayerMask damageLayerMask;
-    [SerializeField] ParticleSystem flashFX;
+    [SerializeField] protected Transform mainCamera;
+    [SerializeField] protected AudioSource shootAudioSource;
+    [SerializeField] protected AudioClip shootSound;
 
-    [Header("Impact Force")]
-    [SerializeField] float impactForce = 3f;
+    [SerializeField] protected int maxAmmo;
+    [SerializeField] protected float fireRate = 0.3f;
 
-    [Header("FX Settings")]
-    [SerializeField] GameObject impactEffect;
+    protected float fire;
+    protected int ammo;
 
-    private float fire;
-
-    // Start is called before the first frame update
     void Start()
     {
         fire = fireRate;
+        ammo = maxAmmo;
     }
 
-    // Update is called once per frame
     void Update()
     {
         fire -= Time.deltaTime;
 
         if (Input.GetButton("Fire1") && fire < 0)
         {
-            fire = fireRate;
 
-            flashFX.Play();
-            //TODO Play Sound
-
-            RaycastHit hit;
-
-            Debug.DrawRay(mainCamera.position, mainCamera.forward * range, Color.red, 10f);
-            if (Physics.Raycast(mainCamera.position, mainCamera.forward, out hit, range, damageLayerMask))
+            if (ammo > 0)
             {
-                //TODO Use POOL
-                Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-
-                Rigidbody rb = hit.collider.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    rb.AddForce((hit.point - mainCamera.position).normalized * impactForce);
-                }
-
-                DestroyableObject destroyable = hit.collider.GetComponent<DestroyableObject>();
-                if (destroyable != null)
-                {
-                    destroyable.DoDamage(damage);
-                }
-
-                Bomb bomb = hit.collider.GetComponent<Bomb>();
-                if (bomb != null)
-                {
-                    bomb.DoDamage(damage);
-                }
+                shootAudioSource.PlayOneShot(shootSound);
+                Shoot();
+                ammo--;
             }
         }
     }
+
+
+    protected abstract void Shoot();
+
 }

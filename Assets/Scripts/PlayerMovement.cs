@@ -7,6 +7,9 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 10f;
+    [SerializeField] AudioSource voiceAudioSource;
+    [SerializeField] AudioClip jumpSound;
+    [SerializeField] AudioClip landSound;
 
     [Header("Gravity")]
     [SerializeField] float jumpHight = 10f;
@@ -17,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
 
     CharacterController characterController;
     float gravity;
+
+    bool wasGrounged;
 
     // Start is called before the first frame update
     void Start()
@@ -38,14 +43,21 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
 
+            if (!wasGrounged)
+            {
+                voiceAudioSource.PlayOneShot(landSound);
+            }
+
             if (Input.GetButtonDown("Jump"))
             {
+                voiceAudioSource.PlayOneShot(jumpSound);
                 gravity = jumpHight;
             }
             else if (gravity < 0)
             {
                 gravity = gravityScale;
             }
+            wasGrounged = isGrounded;
 
         }
         else

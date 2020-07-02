@@ -334,15 +334,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
+  shootAudioSource: {fileID: 0}
+  shootSound: {fileID: 8300000, guid: acaebc89b98b82142bd2b24edb6081e4, type: 3}
+  maxAmmo: 100
+  fireRate: 0.15
   range: 100
   damage: 30
-  fireRate: 0.15
   damageLayerMask:
     serializedVersion: 2
     m_Bits: 768
-  flashFXPos: {fileID: 4384263988222087592}
+  flashFX: {fileID: 0}
   impactForce: 150
-  flashEffect: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 3}
   impactEffect: {fileID: 100002, guid: 99c73c92ac40473459640b165473206f, type: 3}
 --- !u!1 &5445880612584552763
 GameObject:
